@@ -1,0 +1,85 @@
+--- Documentation ---
+
++ getURLs.__init__ (file)
+Main code file containing the program interface.
+
++ getURLs.__init__.supported (dict)
+Dictionary containing the compatible pages of the whole module.
+
++ getURLs.__init__.support_functions (tuple)
+Tuple containing all the support check functions of the whole module.
+
++ getURLs.__init__.yield_functions (tuple)
+Tuple containing all the periodic URLs fetching functions of the whole module, that is, functions whose names end in Yield.
+
++ getURLs.__init__.functions (tuple)
+Tuple containing all the URL fetching functions of the whole module.
+
++ getURLs.__init__.SupportIsAvailable(URL: str) (return bool) (function)
+Check if there is support for the given URL.
+
+The check is performed by calling the check functions of the whole module, these functions are stored in the tuple named "support_functions".
+
++ getURLs.mangas.GetURLsYield(URL: str, start: int = 1, pages: int = 0) (return dict) (yield function)
+It obtains the information and URLs from the given URL and returns them periodically. The first return will always be a dictionary with data such as name, start and number of pages, and then it will return the URLs per page.
+
+The start page and the number of pages may vary, if a start page is requested but not found, the last page is set as the start page and the number of pages is set to one, on the other hand if the number of pages requested is greater than the number of pages available, the number will be subtracted to match the corresponding number of pages.
+
+The first dictionary is structured as follows:
+{"INFO": {"name": "xxx", "start": int, "pages": int}}
+
+And the dictionary with the URLs as follows:
+{"Chapter N or Page No.N or title": ["https://www.host.com/filexxxx1.ext", "https://www.host.com/filexxxx2.ext"]}
+
+It uses the functions contained in the "yield_functions" tuple.
+
++ getURLs.mangas.GetURLs(URL: str, start: int = 1, pages: int = 0) (return dict) (function)
+Exactly the same as "GetURLsYield" with the difference that this function waits to have the information and all the pages to be returned.
+
+It uses the functions contained in the "functions" tuple.
+
+--------------------------------------------------------
++ getURLs.globalfunctions (file)
+Set of functions commonly used by the module.
+
++ getURLs.globalfunctions.GetResponse(URL: str, **args) (return Response) (function)
+Gets a response (object type Response) from the requested URL. The other arguments are the same as those of the "get" function of the "Requests" module. If the timeout is not specified, it will be set to ten seconds.
+
+Note: To learn more about the function arguments, see the "get" function of the "requests" module.
+
++ getURLs.globalfunctions.GetSoup(URL: str, **args) (return BeautifulSoup) (function)
+This function returns an object of type "BeatifulSoup" with the entered URL which can be a string or an object of type "Response".
+
++ getURLs.globalfunctions.GetJson(data: str) (return dict) (function)
+Gets the data contained in a JSON
+
++ getURLs.globalfunctions.EvalSoup(soup: BeatifulSoup) (function)
+Checks if the variable passed as argument is None, and if it is, throws an exception.
+
+It is a small condition converted to a function because it is repeated many times in the module.
+
+--------------------------------------------------------
++ getURLs.mangas (file)
+Scraping is only available for pages oriented to mangas and manwhas.
+
++ getURLs.mangas.supported (tuple)
+Tuple containing the pages supported so far.
+
++ getURLs.mangas.SupportIsAvailable(URL: str) (return bool) (function)
+Check if there is support for the given URL.
+
+The check is done by comparing the pages in the "supported" variables.
+
++ getURLs.mangas.MangasYield(URL: str, start: int = 1, pages: int = 0) (return dict) (yield function)
+It obtains the information and URLs from the given URL and returns them periodically. The first return will always be a dictionary with data such as name, start and number of pages, and then it will return the URLs per page.
+
+The start page and the number of pages may vary, if a start page is requested but not found, the last page is set as the start page and the number of pages is set to one, on the other hand if the number of pages requested is greater than the number of pages available, the number will be subtracted to match the corresponding number of pages.
+
+The first dictionary is structured as follows:
+{"INFO": {"name": "xxx", "start": int, "pages": int}}
+
+And the dictionary with the URLs as follows:
+{"Chapter N or Page No.N or title": ["https://www.host.com/filexxxx1.ext", "https://www.host.com/filexxxx2.ext"]}
+
++ getURLs.mangas.Mangas(URL: str, start: int = 1, pages: int = 0) (return dict) (function)
+Exactly the same as "MangasYield" with the difference that this function waits to have the information and all the pages to be returned.

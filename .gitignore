@@ -1,0 +1,12 @@
+# ignore
+*
+
+# not ignore
+!*/
+!.gitignore
+!documentation.txt
+!LICENSE
+!README.md
+!GetURLs/__init__.py
+!GetURLs/globalfunctions.py
+!GetURLs/mangas.py
