@@ -1,0 +1,30 @@
+# Ignore
+*
+
+# Not ignore
+!*/
+
+!app/GetURLs/__init__.py
+!app/GetURLs/globalfunctions.py
+!app/GetURLs/mangas.py
+
+!app/__init__.py
+!app/__main__.py
+!app/app_help.py
+!app/auxfunctions.py
+!app/auxfunctions_winapi.py
+!app/downloadfile.py
+!app/gotoxy.py
+!app/langs.json
+!app/langs.py
+!app/lockfile.py
+
+!ca_resource/__init__.py
+!ca_resource/add_lang_json.py
+
+!.gitignore
+!build.py
+!console-app.sublime-project
+!documentation.txt
+!linux.py
+!README.md

@@ -1,0 +1,44 @@
+{
+	"folders":
+	[
+		{
+		"path": ".",
+        "folder_exclude_patterns": ["__pycache__"],
+		}
+	],
+	"build_systems":
+    [
+        {
+            "name": "Main",
+            "shell_cmd": "start cmd /k python -m app",
+            "working_dir": "$project_path",
+            "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+
+            "linux": {
+                "shell_cmd": "python -u linux.py"
+            }
+        },
+        {
+            "name": "Main (test)",
+            "shell_cmd": "start cmd /k python -m app --test",
+            "working_dir": "$project_path",
+            "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+
+            "linux": {
+                "shell_cmd": "python -u linux.py --test"
+            }
+        },
+        {
+        	"name": "Build",
+            "shell_cmd": "python -u build.py",
+            "working_dir": "$project_path",
+            "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+        },
+        {
+            "name": "Add langs.json",
+            "shell_cmd": "python -u resource/add_lang_json.py app",
+            "working_dir": "$project_path",
+            "file_regex": "^\\s*File \"(...*?)\", line ([0-9]*)",
+        }
+    ]
+}

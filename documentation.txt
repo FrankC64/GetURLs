@@ -1,0 +1,210 @@
+--- Documentation ---
+
++ app.__main__ (code file)
+Main code file that calls the app.
+
++ app.__main__.main (function)
+Main method that calls the application class. This function also contains an exception handler to notify the causes of its closure.
+
+--------------------------------------------------------
+
++ app.__init__ (code file)
+Code file containing the program interface.
+
++ app.__init__.ConsoleApp (class)
+Class containing the app interface.
+
++ app.__init__.ConsoleApp.Start() (method)
+Method that starts the program.
+
++ app.__init__.ConsoleApp.PreparedFiles() (method)
+This method prepares everything necessary for downloading the files and is called after the initialization of the thread that calls the "StartObtainingURLs" method.
+
+This method will be executed under two conditions, first, that "StartObtainingURLs" has not finished and second, that the "queue" member (queue of files to download) is not empty.
+
++ app.__init__.ConsoleApp.SelectLang() (method)
+Language selection screen. It is only called when the language is not specified.
+
+Displays a list of languages excluding variations. The choice of language is made by integer from 0 to n(languages without variants), this is the only way to choose from within the app, already by arguments you have to specify the name of the language.
+
++ app.__init__.ConsoleApp.ObtainPreInfo() (method)
+It asks for the URL, the start page and the number of pages.
+
+This method requests the necessary data until they are valid and for each invalid one it shows an informative message.
+
+In the case of the number of pages, if an integer less than 1 is passed, it is interpreted as the user wants to have all the pages from the given start value.
+
++ app.__init__.ConsoleApp.StartObtainingURLs() (method)
+Initiates file getting. This method is always called through a thread.
+
+The URLs are obtained through a function that is in the module "getURLs", but before obtaining them a dictionary is obtained with the name of the series or set of pages, the start page and the number of pages.
+
+The start page and the number of pages can vary, if the user requests a start page that is not found, the last page is set as the start page and the number of pages is set to one, on the other hand if the number of pages requested is greater than the number of pages available, the number will be subtracted to match the corresponding number of pages.
+
++ app.__init__.ConsoleApp.PrintWithColor(*text) (method)
+Method that prints the text with colors.
+
+It accepts an endless number of arguments which will be converted into str for concatenation.
+
++ app.__init__.ConsoleApp._FilterArgs() (method)
+It filters the arguments passed to the app and if an irregularity occurs in them it notifies and subsequently closes the app.
+
++ app.__init__.ConsoleApp.__NotSupportURLMessages() (method)
+It prints an error message indicating that the URL passed as an argument is not supported and then prints a list of those that are.
+
+This code snippet is isolated to avoid repeating it, since it is executed in the _FilterArgs and ObtainPreInfo methods.
+
++ app.__init__.ConsoleApp.__IsBaseURL(URL: str) (return bool) (method)
+Check if the URL corresponds to the home page of the page.
+
++ app.__init__.ConsoleApp.__WindowsAdjustRoute(route: str, max_length: int) (return str) (method)
+Returns a reduced route. Only works on Windows.
+
+This method calls the AdjustRoute function to perform the route reduction and subsequently reports the change made to the route. As a precaution, the operating system is evaluated to avoid undesired results. This method is not called on non-Windows operating systems.
+
++ app.__init__.AppClosed (exception)
+Exception thrown when an error occurs that cannot be cured and indicates the closing of the program.
+
+--------------------------------------------------------
+
++ app.app_help (code file)
+It contains the help text of the application and also contains the messages in different languages in case the "langs.json" file is missing or cannot be read.
+
++ app.app_help.app_help (variable)
+Contains the app's help message.
+
++ app.app_help.aux_lang (variable)
+It contains the sentences or texts that will be printed by the app in different languages.
+
+--------------------------------------------------------
+
++ app.auxfunctions (code file)
+Code file with different functions for specific tasks.
+
++ app.auxfunctions.AdjustRoute(route: str, length: int, n_elements: int) (return str) (function)
+Function to shorten the path passed as argument. This function is only useful in Windows.
+
+route: A string of the route to reduce.
+length: Maximum length that the route must have. The default value is 240.
+n_elements: Number of elements (file and folders) that can be shortened. The default value is 2.
+
++ app.auxfunctions.ClearConsole() (function)
+To clean the console or terminal.
+
++ app.auxfunctions.ClearName(name: str) (return str) (function)
+Replaces invalid or illegal characters and names.
+
++ app.auxfunctions.PrintDivisor() (function)
+Prints a series of characters vertically with the console length in blue.
+
++ app.auxfunctions.PrintCenter(text: str) (function)
+Prints text centrally on the console if and when it can be printed.
+
++ app.auxfunctions.PrintWithColor(text: str, langs: dict = {}, color: str = "", end: str = "\n") (function)
+Prints the string passed as the first argument with the color corresponding to the information found in langs or in default with the specified color.
+
+Color printing with the help of langs is as follows:
+
+* If the key "info" is in langs it gets the value given by that key and checks if it is in the passed string, if so it prints that value in yellow color and the rest of the string in white color. This is only done if the string starts with the value contained in the "info" key.
+* For "error" the same as the "info" key, but prints its value in red color and the rest of the string in white color. This is only done if the string starts with the value contained in the "error" key.
+* For "si" and "sp" in the same way with green color and the rest of the string in white color. In this part only the existence of "si" is checked since they are correlated keys, where "si" contains the name "size" and "sp" the name "speed" in its corresponding language.
+
+Absence of langs:
+
+In case there are no validatable keys in "langs" the color variable is checked which so far only accepts "BLUE" as value and any other value is ignored and the string is printed in white color.
+
+Like Python's "print" function, it accepts an argument called "end", an argument that will be added to the end of the string passed as the first argument.
+
++ app.auxfunctions.InputWithColor(text: str, langs: dict = {}, color: = "") (function)
+It prints the passed text with color just like "PrintWithColor" and then it is put in standby to accept keyboard input like the "input" function.
+
++ app.auxfunctions.DefaultColor() (function)
+Sets the terminal colors to their default state.
+
++ app.auxfunctions.ValueToStr(value: int) (return str) (function)
+Converts an integer number assuming it refers to Bytes into a unit that can be represented in a shorter form with its respective symbol.
+
++ app.auxfunctions.VerifyInternetConnection() (return bool) (function)
+Checks if there is an internet connection, returning True if there is and False if not. To verify Internet connectivity, an attempt is made to connect to three URLs which are: https://www.google.com, https://www.bing.com and https://www.w3.org.
+
+--------------------------------------------------------
+
++ app.auxfunctions_winapi (code file)
+Extension of "auxfunctions" to be able to print with colors in Windows.
+
+Why don't I include the code from this file in auxfunctions?
+Because for Windows I need to make several calls to its API, in addition to prepare functions and variables, which does not follow the full Python code structure of auxfunctions.
+
++ app.auxfunctions_winapi.PrintWithColor(text: str, langs: dict = {}, color: str = "", end: str = "\n") (function)
+Prints the string passed as the first argument with the color corresponding to the information found in langs or in default with the specified color.
+
+Color printing with the help of langs is as follows:
+
+* If the key "info" is in langs it gets the value given by that key and checks if it is in the passed string, if so it prints that value in yellow color and the rest of the string in white color. This is only done if the string starts with the value contained in the "info" key.
+* For "error" the same as the "info" key, but prints its value in red color and the rest of the string in white color. This is only done if the string starts with the value contained in the "error" key.
+* For "si" and "sp" in the same way with green color and the rest of the string in white color. In this part only the existence of "si" is checked since they are correlated keys, where "si" contains the name "size" and "sp" the name "speed" in its corresponding language.
+
+Absence of langs:
+
+In case there are no validatable keys in "langs" the color variable is checked which so far only accepts "BLUE" as value and any other value is ignored and the string is printed in white color.
+
+Like Python's "print" function, it accepts an argument called "end", an argument that will be added to the end of the string passed as the first argument.
+
+NOTE: Unlike the code for Linux, in Windows "wprintf" is used to print the text, since using the Python "print" function does not work correctly for color printing using the winapi functions.
+
++ app.auxfunctions_winapi.DefaultColor() (function)
+Sets the terminal colors to their default state.
+
++ app.auxfunctions_winapi.DEFAULT_COLOR (constant)
+Contains the default color of the console.
+
++ app.auxfunctions_winapi.__PreparedConstants (function)
+This function is called when the code is imported and prepares the constants to be used in the code.
+
+--------------------------------------------------------
+
++ app.downloadfile (code file)
+Code file where you have the function to download the files.
+
++ app.downloadfile.DownloadFile(URL: str, folder: str, lang: str, continue_downloads: bool) (function)
+This function is in charge of downloading the files from the obtained URLs and will always be called as a process from the "app.ConsoleApp.DownloadFiles" method in __init__.py. 
+
+URL: URL to the file to be downloaded.
+folder: Path where the file will be saved. If no subfolders exist, they will be created.
+lang: Language used for printing text on the console.
+continue_downloads: A boolean to specify whether you want to continue the downloads from where you left off or restart it from the beginning. If the download cannot be continued, the previously downloaded file will be deleted and the download will be restarted.
+
++ app.downloadfile.RestartDownload (exception)
+It is an exception for internal use and controlled for the sole purpose of restarting the download when the file is deleted after the download has started.
+
++ app.downloadfile._GetResponse(URL: str, **args) (return Response) (function)
+Returns an object of type Response of the URL passed as argument. This function will be executed until the response is obtained, if while doing this task the internet connection is lost or it takes a long time to respond, a message will be printed in the console indicating that there is no internet connection.
+
+URL: URL from where the answer will be obtained.
+**args: Arguments or keywords that will be passed to the "get" function of the "requests" module.
+
+--------------------------------------------------------
+
++ app.gotoxy (code file)
+Documentation: https://github.com/FrankC64/Python-gotoxy
+
+--------------------------------------------------------
+
++ app.langs (code file)
+Code file containing the words and sentences in different languages that will be printed by the console app, plus some functions.
+
+The text to be printed is loaded from a JSON file named "langs.json".
+
++ app.langs.langs (dict)
+Dictionay containing the text that will be displayed by the app. The dictionay is loaded from a JSON file in the same directory.
+
++ app.langs.Normalize(text: str) (return str) (function)
+It replaces stressed vowels with simpler ones, except for a trisyllable that replaces "nio" with "ño".
+
++ app.langs.FilterLang(text: str) (return str) (function)
+Checks if the language passed as argument is available, if it is available it returns the corresponding key, otherwise it returns an empty string.
+
+--------------------------------------------------------
+
++ app.lockfile (code file)
+Documentation: https://github.com/FrankC64/Lock-File
