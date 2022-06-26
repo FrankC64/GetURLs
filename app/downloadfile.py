@@ -45,7 +45,7 @@ def DownloadFile(
         ignore_max_lenght: bool = True):
     # Start downloading files.
 
-    filename = URL
+    filename = ""
     file_response = None
     local_size, online_size = None, None
 
@@ -53,8 +53,9 @@ def DownloadFile(
     else: folder = abspath(folder)
     if not exists(folder): makedirs(folder, exist_ok=True)
 
-    filename = ClearName(basename(URL.strip("/")))
-    filename = sep.join((folder, filename))
+    filename = basename(URL.strip("/"))
+    if "?" in filename: filename = filename[:filename.find("?")]
+    filename = sep.join((folder, ClearName(filename)))
 
     if len(filename) > 240 and sys.platform.startswith("win32") \
             and not ignore_max_lenght:
@@ -64,10 +65,24 @@ def DownloadFile(
         filename = temp
 
     def _DownloadFile():
-        nonlocal file_response, local_size, online_size
+        nonlocal file_response, filename, local_size, online_size
         headers = {}
 
         file_response = _GetResponse(URL, lang)
+
+        """
+        if file_response.headers['Content-Type'] == "image/webp":
+            if filename.rfind(".") > -1:
+                filename = filename[:filename.rfind(".")]
+
+            else:
+                import hashlib
+                filename = hashlib.new("sha256")
+                filename.update(URL.encode())
+                filename = filename.hexdigest()
+
+            filename = filename + ".webp"
+        """
 
         if "Content-Length" in file_response.headers:
             online_size = int(file_response.headers['Content-Length'])

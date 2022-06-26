@@ -1,6 +1,6 @@
 # Code file containing the program interface.
 __author__ = "Frank Cedano <frankcedano64@gmail.com>"
-__version__ = "1.0"
+__version__ = "1.0.1"
 
 __all__ = ["AppClosed", "ConsoleApp", "main"]
 
