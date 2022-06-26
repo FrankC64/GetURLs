@@ -1,18 +1,19 @@
 # Module for obtaining links to multimedia files of series, mangas, etc.
 __author__ = "Frank Cedano <frankcedano64@gmail.com>"
-__version__ = "0.1"
+__version__ = "0.2"
 
 __all__ = ["SupportIsAvailable", "GetURLsYield", "GetURLs"]
 
-from . import mangas
+from . import animes, mangas
 
 supported = {
-    'Mangas': mangas.supported
+    'Animes': animes.supported,
+    'Mangas': mangas.supported,
 }
 
-support_functions = (mangas.SupportIsAvailable,)
-yield_functions = (mangas.MangasYield,)
-functions = (mangas.Mangas,)
+support_functions = (animes.SupportIsAvailable, mangas.SupportIsAvailable)
+yield_functions = (animes.AnimesYield, mangas.MangasYield)
+functions = (animes.Animes, mangas.Mangas)
 
 def SupportIsAvailable(URL: str) -> bool:
     """Check if there is support for the given URL.

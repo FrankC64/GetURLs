@@ -1,11 +1,13 @@
 # Get URLs
 A module with a set of instructions for obtaining URLs of audiovisual media, whether images, videos, etc., contained in specific web pages.
 
-## Supported pages
-* **[novecool](https://www.novelcool.com) (es, en)**
+## Supported pages (mangas and manwhas)
+* **[NovelCool](https://www.novelcool.com) (en, es)**
 
-### Coming soon
-* **[jkanime](https://www.jkanime.net) (es)**
+## Supported pages (anime)
+* **[JKanime](https://www.jkanime.net) (es)**
+
+<!-- ### Coming soon -->
 
 ## Dependencies
 * **BeautifulSoup** (python3 -m pip install bs4)

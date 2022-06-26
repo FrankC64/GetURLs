@@ -3,8 +3,8 @@ __all__ = ["SupportIsAvailable", "MangasYield", "Mangas"]
 
 import re
 from requests import ConnectionError, ReadTimeout
-from time import sleep
-from .globalfunctions import EvalSoup, GetJson, GetResponse, GetSoup
+from .globalfunctions import (
+    EvalSoup, GetJson, GetResponse, GetSoup, StartAndPages)
 
 supported = ("novelcool.com",)
 
@@ -43,7 +43,7 @@ def MangasYield(URL: str, start: int = 1, pages: int = 0) -> dict:
             yield {"ERROR": "URL of noovelcool incompatible."}
             return
 
-        soup = GetSoup(URL)
+        soup = GetSoup(URL, "GET")
         name = soup.find("h1", attrs={'itemprop': "name"})
 
         if name is None:
@@ -57,7 +57,7 @@ def MangasYield(URL: str, start: int = 1, pages: int = 0) -> dict:
                     "Invalid URL. The expected indications are not found.")
 
             URL = URL['href']
-            soup = GetSoup(URL)
+            soup = GetSoup(URL, "GET")
             name = soup.find("h1", attrs={'itemprop': "name"}).text
 
         else:
@@ -67,21 +67,14 @@ def MangasYield(URL: str, start: int = 1, pages: int = 0) -> dict:
         URLs_chapter = URLs_chapter.findAll("a")
         URLs_chapter.reverse()
 
-        if start > len(URLs_chapter):
-            start = len(URLs_chapter) - 1
-        else:
-            start -= 1
-
-        if pages == 0 or start+pages > len(URLs_chapter):
-            pages = len(URLs_chapter)
-        else:
-            pages = start + pages
+        start, pages = StartAndPages(start, pages, len(URLs_chapter))
+        start -= 1; pages -= 1
 
         yield {'INFO': {
             'name': name, 'start': start + 1, 'pages': pages - start}}
 
         for i in range(start, pages):
-            soup = GetSoup(URLs_chapter[i]['href'], headers=headers)
+            soup = GetSoup(URLs_chapter[i]['href'], "GET", headers=headers)
             soup = str(soup)
 
             URLs = re.findall(r"(?:\")(.*?)(?:\",)", soup[:soup.find("],")])
